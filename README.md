@@ -1,17 +1,19 @@
-# Study Room Density Tracker
+# Study Area Congestion Tracker
 
-The goal of this project is a dashboard accessible over the web that displays how busy different study areas around campus are.
+This project aims to provide a dashboard through a web interface that displays congestion levels of student study areas around a university campus.
 
 ## Components
 
-### Sensor Units
+### Sensor Nodes
+Each node needs to have Bluetooth and Wi-Fi capability, specifically a Wi-Fi interface that supports [monitor mode](https://en.wikipedia.org/wiki/Monitor_mode).
 
-Each sensor unit needs to be bluetooth and Wi-Fi enabled. It will use the bluetooth functionality to poll all nearby devices. This is the data that will be used to approximate density. The component requires Wi-Fi to then post its results to the server.
+Bluetooth module is used to poll for unique devices within the range of the node, and Wi-Fi is used to also monitor for unique devices. This data is then sent to a processing server through an internet connection.
 
-### Estimator (could be separate or inside the sensor units)
+The topology of this program is centralised; there is one server that each node connects to, and the nodes do not connect to each other.
 
-The estimator is what will take the data from the polling and produce an estimated density. This will need to be tuned with real world testing in order to ensure it is accurate. This could be implemented on the sensor devices, or alternatively it can be deployed elsewhere and read in the events.
+### Server
+#### Processing Server
+This component collates the data from each sensor node to produce an estimated density measure in a human–readable qualitative format.
 
-### Web Server
-
-The Web Server takes the final data and makes it accessible to students. It should be available on the public internet or the UTS student intranet.
+#### Web Server
+The Web Server is implemented on the same server where the processing occurs. It provides a web interface to this project that is a dashboard of density estimates for each area nodes are deployed.
