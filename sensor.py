@@ -22,11 +22,11 @@ if __name__ == "__main__":
         manufacturer_data = peripheral.manufacturer_data()
         for manufacturer_id, value in manufacturer_data.items():
             print(f"    Manufacturer ID: {manufacturer_id}")
-            print(f"    Manufacturer data: {value}")
+            print(f"    Manufacturer data: {value.hex()}")
 
         services = peripheral.services()
         for service in services:
             print(f"    Service UUID: {service.uuid()}")
-            print(f"    Service data: {service.data()}")
+            print(f"    Service data: {service.data().hex()}")
 
     print(f"A total of {len(peripherals)} were found.")
