@@ -1,2 +1,2 @@
 Flask~=3.0.3
-simplepyble~=0.7.3
+bleak~=0.22.3
