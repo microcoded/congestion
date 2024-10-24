@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge,chrome=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge,chrome=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="HandheldFriendly" content="true" />
     <meta content="yes" name="apple-mobile-web-app-capable" />
@@ -11,6 +11,14 @@
     <title>Dashboard</title>
 </head>
 <body>
-   <h1>Dashboard</h1>
+    <h1>Dashboard</h1>
+    <div class="container">
+        {% for area in study_areas %}
+        <div class="panel {{ area.congestion_level }}">
+            <h3>{{ area.name }}</h3>
+            <p>{{ area.congestion_level }}</p>
+        </div>
+        {% endfor %}
+    </div>
 </body>
 </html>
