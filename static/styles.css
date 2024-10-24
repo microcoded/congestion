@@ -35,17 +35,17 @@ body {
 }
 
 /* Congestion level colours */
-.low {
+.light {
     background-color: #4ba84d;
     color: white;
 }
 
-.medium {
+.balanced {
     background-color: #e49501;
     color: white;
 }
 
-.high {
+.crowded {
     background-color: #c6362c;
     color: white;
 }
