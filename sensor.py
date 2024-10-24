@@ -1,8 +1,10 @@
 import asyncio
+import requests
 from bleak import BleakScanner
 
 DEVICE_COUNT = 0
-
+SERVER_URL = "https://127.0.0.1"
+AREA_NAME = "Library Level 8"
 
 def simple_callback(device, advertisement_data):
     global DEVICE_COUNT
@@ -32,6 +34,7 @@ async def main():
         print("(re)starting scanner")
         async with scanner:
             await asyncio.sleep(5.0)
+        requests.post(SERVER_URL, json={'name': AREA_NAME, 'device_count': DEVICE_COUNT})
         print(f"Devices in scan: {DEVICE_COUNT}")
         DEVICE_COUNT = 0
 
