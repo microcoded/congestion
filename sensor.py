@@ -4,28 +4,15 @@ import random
 import threading
 from bleak import BleakScanner
 
-DEVICE_COUNT = 0
 SERVER_URL = "http://172.19.119.30:1234/receive"
 AREA_NAME = "CB11.04.400"
-
-AREA_LIST = ["test", "bark", "cat", "dog", "Real UTS Study room", "Busy", "Server Crasher", "Not", "Wifi",
-             "My Pants", "UTS Green", "More areas", "I need more names", "Thinking sucks", "😳", "😛",
-             "😥", "🥸", "🤠", "Alumni Green", "Cooker", "Milo", "afhlawfjla", "carpark", "ajfkjawfkl", "こんばんは",
-             "(；ﾟДﾟ)", "Boop",
-             "AJW "
-              "KFLHWAKLF JAWKLFJAW "
-             "LKFJAWLK FJAWKLFJ LAWKFJ LKWAJFLKAWFJ "
-             "KALWFJA KLWFJ KLAWFJKLAWFJKL  AWFJLKAWFJKLAWJFLKAWJFKL "
-             "AWFJAWK LFJL KAWJFK LAWFJKLAWJFKL AWFJAWKLFJALKWFJAKLWFJAWKLFJLKAWJF "
-             "KAWLFJAWKLFJ AWKLF JA WLKFJAWKLF JAWKLFJ AWKLFJ AWKLFJ AWKLFJA \n\n\n\n\n\n\n\n\nWKLFJAWKLFJA",
-             "7", "", " ", 69, "a", "a", 10, "10"]
-
+DEVICES = {}
 
 
 def simple_callback(device, advertisement_data):
-    global DEVICE_COUNT
-    DEVICE_COUNT += 1
-    name = advertisement_data.local_name if advertisement_data.local_name else None
+    global DEVICES
+    DEVICES[device] = "found"
+    # name = advertisement_data.local_name if advertisement_data.local_name else None
     # print(f"{device.address}: {name}")
     #
     # print(f"    Tx Power: {advertisement_data.rssi} dBm")
@@ -56,22 +43,13 @@ async def main():
     scanner = BleakScanner(
         simple_callback
     )
-    global DEVICE_COUNT
+    global DEVICES
     while True:
         print("(re)starting scanner")
         async with scanner:
             await asyncio.sleep(5.0)
-        print(f"Device count: {DEVICE_COUNT}")
-        fire_and_forget(SERVER_URL, json={'name': AREA_NAME, 'device_count': DEVICE_COUNT})
-
-        for area in AREA_LIST:
-            if area == "My Pants":
-                rand_num = random.randrange(1, 21)
-            else:
-                rand_num = random.randrange(0, 1001)
-            print(f"{area} count: {rand_num}")
-            fire_and_forget(SERVER_URL, json={'name': area, 'device_count': rand_num})
-        DEVICE_COUNT = 0
+        fire_and_forget(SERVER_URL, json={'name': AREA_NAME, 'device_count': len(DEVICES)})
+        DEVICES = {}
 
 
 asyncio.run(main())
