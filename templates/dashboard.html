@@ -9,16 +9,34 @@
     <meta content="yes" name="apple-mobile-web-app-capable" />
     <link rel="stylesheet" href="/static/styles.css">
     <title>Dashboard</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function updateDashboard() {
+            $.getJSON('/data', function(data) {
+                let container = $('.container');
+                container.empty();
+
+                data.forEach(function(area) {
+                    let panel = `<div class="panel ${area.congestion_level}">
+                                    <h3>${area.name}</h3>
+                                    <p>${area.congestion_level}</p>
+                                 </div>`;
+                    container.append(panel);
+                });
+            });
+        }
+
+        setInterval(updateDashboard, 1000);
+
+        $(document).ready(function() {
+            updateDashboard();
+        });
+    </script>
 </head>
 <body>
     <h1>Dashboard</h1>
     <div class="container">
-        {% for area in study_areas %}
-        <div class="panel {{ area.congestion_level }}">
-            <h3>{{ area.name }}</h3>
-            <p>{{ area.congestion_level }}</p>
-        </div>
-        {% endfor %}
+        <!-- Study areas -->
     </div>
 </body>
 </html>
