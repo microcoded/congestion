@@ -26,7 +26,7 @@ async def main():
         try:
             requests.post(SERVER_URL, json=data)
         except requests.exceptions.ConnectTimeout as error:
-            print(f"Update failed for {data['name']}")
+            print(f"Update failed for {data['name']}: {error}")
         DEVICES = {}
 
 
