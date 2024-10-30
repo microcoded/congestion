@@ -7,10 +7,10 @@ from bleak.backends.device import BLEDevice
 from bleak.backends.scanner import AdvertisementData
 
 
-SCANNER_REFRESH_TIME = 5.0
-SERVER_URL = "http://172.19.119.30:1234/receive"
-AREA_NAME = "CB11.04.400"
-DEVICES = {}
+SCANNER_REFRESH_TIME: float = 5.0
+SERVER_URL: str = "http://172.19.119.30:1234/receive"
+AREA_NAME: str = "CB11.04.400"
+DEVICES: dict[str, AdvertisementData] = {}
 
 
 def scanner_callback(device: BLEDevice, advertisement_data: AdvertisementData) -> None:
@@ -37,7 +37,7 @@ async def main() -> None:
     Returns:
         None
     """
-    scanner = BleakScanner(
+    scanner: BleakScanner = BleakScanner(
         scanner_callback
     )
     global DEVICES
@@ -46,7 +46,7 @@ async def main() -> None:
         async with scanner:
             await async_sleep(SCANNER_REFRESH_TIME)
         print(f"Device count: {len(DEVICES)}")
-        data = {'name': AREA_NAME, 'device_count': len(DEVICES)}
+        data: dict[str, str | int] = {'name': AREA_NAME, 'device_count': len(DEVICES)}
         try:
             post(SERVER_URL, json=data)
         except ConnectTimeout as error:
