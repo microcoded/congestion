@@ -9,8 +9,8 @@ def estimate(data: dict) -> dict[str, str] | None:
     """
 
     congestion_level: str
-    lower_bracket: int = 150
-    upper_bracket: int = 300
+    lower_bracket: int = 20
+    upper_bracket: int = 40
 
     if 'device_count' not in data or 'name' not in data:
         return None

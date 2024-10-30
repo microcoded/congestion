@@ -12,6 +12,7 @@ def dashboard():
     # Render the dashboard HTML template
     return render_template('dashboard.html')
 
+
 @app.route('/receive', methods=['POST'])
 def receive_post():
     global study_areas
@@ -34,6 +35,7 @@ def receive_post():
             study_areas.append(area_data)
 
     return jsonify({"message": "OK"}), 200
+
 
 @app.route('/data', methods=['GET'])
 def get_data():
