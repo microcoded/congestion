@@ -1,7 +1,7 @@
-import asyncio
-from typing import Coroutine, Any
-
-import requests
+from asyncio import run as async_run
+from asyncio import sleep as async_sleep
+from requests import post
+from requests.exceptions import ConnectTimeout
 from bleak import BleakScanner
 from bleak.backends.device import BLEDevice
 from bleak.backends.scanner import AdvertisementData
@@ -44,15 +44,15 @@ async def main() -> None:
     while True:
         print("(re)starting scanner")
         async with scanner:
-            await asyncio.sleep(SCANNER_REFRESH_TIME)
+            await async_sleep(SCANNER_REFRESH_TIME)
         print(f"Device count: {len(DEVICES)}")
         data = {'name': AREA_NAME, 'device_count': len(DEVICES)}
         try:
-            requests.post(SERVER_URL, json=data)
-        except requests.exceptions.ConnectTimeout as error:
+            post(SERVER_URL, json=data)
+        except ConnectTimeout as error:
             print(f"Update failed for {data['name']}: {error}")
         DEVICES = {}
 
 
 # Run the main function
-asyncio.run(main())
+async_run(main())
