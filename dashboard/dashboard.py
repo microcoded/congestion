@@ -10,18 +10,30 @@ study_areas = []
 @app.route('/')
 def dashboard():
     # Render the dashboard HTML template
+    """
+    Renders the dashboard from ./templates/dashboard.html
+
+    Returns:
+        None
+    """
     return render_template('dashboard.html')
 
 @app.route('/receive', methods=['POST'])
 def receive_post():
+    """
+    Receives POST request data on the /receive endpoint
+
+    Returns:
+        JSON response, 200 OK
+    """
     global study_areas
     data_in = request.get_json() or request.form.to_dict()
 
-    # Convert device_count to integer if it's a string
+    # Convert device_count to integer
     if isinstance(data_in.get('device_count'), str):
         data_in['device_count'] = int(data_in['device_count'])
 
-    # DEBUG
+    # DEBUG: Log received data to console
     print("Received data:", data_in)
     area_data = estimate.estimate(data_in)
 
@@ -37,8 +49,15 @@ def receive_post():
 
 @app.route('/data', methods=['GET'])
 def get_data():
+    """
+    Receives GET request from client devices.
+    Sends updated data to the requesting client.
+
+    Returns:
+        JSON response of study areas and their congestion levels.
+    """
     return jsonify(study_areas)
 
-
+# Main function, entrypoint
 if __name__ == '__main__':
     app.run(debug=True)

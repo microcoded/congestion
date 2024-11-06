@@ -1,33 +1,58 @@
-import asyncio
-import requests
+from asyncio import run as async_run
+from asyncio import sleep as async_sleep
+from requests import post
+from requests.exceptions import ConnectTimeout
 from bleak import BleakScanner
-
-SERVER_URL = "http://172.19.119.30:1234/receive"
-AREA_NAME = "CB11.04.400"
-DEVICES = {}
+from bleak.backends.device import BLEDevice
+from bleak.backends.scanner import AdvertisementData
 
 
-def simple_callback(device, advertisement_data):
+SCANNER_REFRESH_TIME: float = 5.0
+SERVER_URL: str = "http://127.0.0.1:1234/receive"
+AREA_NAME: str = "CB11.04.400"
+DEVICES: dict[str, AdvertisementData] = {}
+
+
+def scanner_callback(device: BLEDevice, advertisement_data: AdvertisementData) -> None:
+    """
+    Function to process each device found in a scan.
+    WARNING: This function edits the global DEVICES dict.
+
+    Parameters:
+        device: The device information of the found device.
+        advertisement_data: The data advertised by the found device.
+
+    Returns:
+       None
+    """
     global DEVICES
-    DEVICES[device.address] = True
+    DEVICES[device.address] = advertisement_data
 
 
-async def main():
-    scanner = BleakScanner(
-        simple_callback
+async def main() -> None:
+    """
+    The wrapper for the sensor code.
+    Runs the scanner on a set interval, flushing and sending the results after each run.
+
+    Returns:
+        None
+    """
+    scanner: BleakScanner = BleakScanner(
+        scanner_callback
     )
     global DEVICES
     while True:
         print("(re)starting scanner")
         async with scanner:
-            await asyncio.sleep(5.0)
+            await async_sleep(SCANNER_REFRESH_TIME)
         print(f"Device count: {len(DEVICES)}")
-        data = {'name': AREA_NAME, 'device_count': len(DEVICES)}
+        data: dict[str, str | int] = {'name': AREA_NAME, 'device_count': len(DEVICES)}
         try:
-            requests.post(SERVER_URL, json=data)
-        except requests.exceptions.ConnectTimeout as error:
+            post(SERVER_URL, json=data)
+        except ConnectTimeout as error:
             print(f"Update failed for {data['name']}: {error}")
         DEVICES = {}
 
 
-asyncio.run(main())
+# Run the main function
+async_run(main())
