@@ -8,7 +8,7 @@ from bleak.backends.scanner import AdvertisementData
 
 
 SCANNER_REFRESH_TIME: float = 5.0
-SERVER_URL: str = "http://172.19.119.30:1234/receive"
+SERVER_URL: str = "http://127.0.0.1:1234/receive"
 AREA_NAME: str = "CB11.04.400"
 DEVICES: dict[str, AdvertisementData] = {}
 
