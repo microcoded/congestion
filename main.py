@@ -1,4 +1,4 @@
-import dashboard
+from dashboard import dashboard
 
 # Dashboard entrypoint
 if __name__ == '__main__':
