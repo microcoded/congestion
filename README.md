@@ -5,9 +5,9 @@ This project aims to provide a dashboard through a web interface that displays c
 ## Components
 
 ### Sensor Nodes
-Each node needs to have Bluetooth and Wi-Fi capability, specifically a Wi-Fi interface that supports [monitor mode](https://en.wikipedia.org/wiki/Monitor_mode).
+Each node needs to have Bluetooth capability and a network connection.
 
-Bluetooth module is used to poll for unique devices within the range of the node, and Wi-Fi is used to also monitor for unique devices. This data is then sent to a processing server through an internet connection.
+Bluetooth module is used to poll for unique devices within the range of the node. This data is then sent to a processing server through an internet connection.
 
 The topology of this program is centralised; there is one server that each node connects to, and the nodes do not connect to each other.
 
